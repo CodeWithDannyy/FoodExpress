@@ -1,7 +1,7 @@
 # 🔥 FoodExpress — Online Food Ordering System
 
 **DBS Project** | FAST NUCES Karachi  
-**Group Members:** Bazil Uddin Khan (24K-0559), Daanial Tejani (24K-0671), Abdul Manan (23K-0829)
+**Group Members:**  Daanial Tejani (24K-0671), Bazil Uddin Khan (24K-0559), Abdul Manan (23K-0829)
 
 ---
 
