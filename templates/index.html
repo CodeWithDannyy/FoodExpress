@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}FoodExpress — Order Food Online{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="hero-section">
+    <div class="container position-relative" style="z-index:1;">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <p class="text-uppercase small fw-bold" style="color:var(--accent);letter-spacing:2px;">Fast &amp; Fresh Delivery</p>
+                <h1 class="hero-title mb-3">Delicious food,<br>delivered to your door.</h1>
+                <p class="hero-sub mb-4">Browse restaurants across Karachi. Order your favourite meals with just a few clicks.</p>
+                <a href="#restaurants" class="btn btn-accent btn-lg px-4">
+                    <i class="bi bi-search me-2"></i>Browse Restaurants
+                </a>
+            </div>
+            <div class="col-lg-5 text-center mt-4 mt-lg-0">
+                <div style="font-size:8rem;opacity:.85;">🍔</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="section-title mb-4">Browse by category</h2>
+        <div class="d-flex flex-wrap gap-2">
+            {% set icons = {'Burgers':'🍔','Pizza':'🍕','Biryani':'🍚','Chinese':'🥡','Desserts':'🍨','Beverages':'🥤'} %}
+            {% for cat in categories %}
+            <a href="{{ url_for('category', cid=cat.category_id) }}" class="category-pill">{{ icons.get(cat.name, '🍽️') }} {{ cat.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Restaurants -->
+<section class="pb-5" id="restaurants">
+    <div class="container">
+        <h2 class="section-title mb-4">Popular restaurants</h2>
+        <div class="row g-4">
+            {% for rest in restaurants %}
+            <div class="col-md-6 col-lg-3">
+                <a href="{{ url_for('restaurant_menu', rid=rest.restaurant_id) }}" class="text-decoration-none">
+                    <div class="card-modern h-100">
+                        <div class="food-img-placeholder">
+                            {% set remojis = {'Burger Lab':'🍔','Pizza Point':'🍕','Student Biryani':'🍚','Ginsoy':'🥡'} %}
+                            {{ remojis.get(rest.name, '🍽️') }}
+                        </div>
+                        <div class="p-3">
+                            <h6 class="fw-bold mb-1" style="color:var(--gray-900);">{{ rest.name }}</h6>
+                            <p class="small mb-2" style="color:var(--gray-400);">
+                                <i class="bi bi-geo-alt me-1"></i>{{ rest.address }}
+                            </p>
+                            <div class="d-flex align-items-center gap-1">
+                                {% for i in range(5) %}
+                                    {% if i < rest.rating|int %}
+                                        <i class="bi bi-star-fill star-filled small"></i>
+                                    {% else %}
+                                        <i class="bi bi-star-fill star-empty small"></i>
+                                    {% endif %}
+                                {% endfor %}
+                                <span class="small ms-1" style="color:var(--gray-400);">{{ rest.rating }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- How it works -->
+<section class="py-5" style="background:#fff;">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">How it works</h2>
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <div style="font-size:2.5rem;margin-bottom:.75rem;">📱</div>
+                <h6 class="fw-bold">1. Browse & Choose</h6>
+                <p class="small" style="color:var(--gray-400);">Explore restaurants and pick your favourite items from the menu.</p>
+            </div>
+            <div class="col-md-4">
+                <div style="font-size:2.5rem;margin-bottom:.75rem;">🛒</div>
+                <h6 class="fw-bold">2. Place Your Order</h6>
+                <p class="small" style="color:var(--gray-400);">Add items to your cart, choose payment method, and checkout.</p>
+            </div>
+            <div class="col-md-4">
+                <div style="font-size:2.5rem;margin-bottom:.75rem;">🚀</div>
+                <h6 class="fw-bold">3. Track & Enjoy</h6>
+                <p class="small" style="color:var(--gray-400);">Track your order in real time and enjoy your meal at your doorstep.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

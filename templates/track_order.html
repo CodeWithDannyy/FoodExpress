@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Track Order #{{ order.order_id }} — FoodExpress{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <a href="{{ url_for('my_orders') }}" class="text-decoration-none small" style="color:var(--gray-400);">
+                <i class="bi bi-arrow-left me-1"></i>Back to orders
+            </a>
+            <div class="card-modern p-4 mt-3">
+                <h4 class="fw-bold mb-1">Order #{{ order.order_id }}</h4>
+                <p class="small mb-4" style="color:var(--gray-400);">{{ order.restaurant_name }} • {{ order.order_date }}</p>
+
+                <!-- Tracking steps -->
+                {% for status in statuses %}
+                    {% set i = loop.index0 %}
+                    {% if i > 0 %}
+                    <div class="track-line {{ 'done' if i <= current_step else 'upcoming' }}"></div>
+                    {% endif %}
+                    <div class="track-step">
+                        <div class="track-dot {{ 'done' if i < current_step else ('current' if i == current_step else 'upcoming') }}">
+                            {% if i < current_step %}
+                                <i class="bi bi-check-lg"></i>
+                            {% elif i == current_step %}
+                                <i class="bi bi-circle-fill" style="font-size:.5rem;"></i>
+                            {% else %}
+                                {{ i + 1 }}
+                            {% endif %}
+                        </div>
+                        <div>
+                            <span class="fw-bold small{% if i == current_step %}" style="color:var(--accent);{% endif %}">{{ status }}</span>
+                            {% if i == current_step %}
+                            <br><span class="small" style="color:var(--gray-400);">Current status</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <hr class="my-4">
+                <div class="d-flex justify-content-between">
+                    <span style="color:var(--gray-400);">Delivery address</span>
+                    <span class="fw-bold small">{{ order.delivery_address }}</span>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <span style="color:var(--gray-400);">Total</span>
+                    <span class="price-tag">Rs. {{ "%.0f"|format(order.total_amount) }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

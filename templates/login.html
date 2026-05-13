@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Login — FoodExpress{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card-modern p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <h2 class="section-title">Welcome back</h2>
+                    <p class="small" style="color:var(--gray-400);">Log in to your FoodExpress account</p>
+                </div>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Email</label>
+                        <input type="email" name="email" class="form-control search-bar" placeholder="you@example.com" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold">Password</label>
+                        <input type="password" name="password" class="form-control search-bar" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-accent w-100 py-2">Log In</button>
+                </form>
+                <p class="text-center small mt-3 mb-0" style="color:var(--gray-400);">
+                    Don't have an account? <a href="{{ url_for('register') }}" style="color:var(--accent);font-weight:600;">Sign up</a>
+                </p>
+                <hr class="my-3">
+                <p class="text-center small mb-0" style="color:var(--gray-400);">
+                    Demo: <code>bazil@example.com</code> / <code>pass123</code>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

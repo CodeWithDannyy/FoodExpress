@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — FoodExpress{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-nav { background:#fff; border-bottom:1px solid var(--gray-100); padding:.5rem 0; }
+    .admin-nav a {
+        color: var(--gray-600);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: .85rem;
+        padding: .4rem .8rem;
+        border-radius: 8px;
+        transition: all .2s;
+    }
+    .admin-nav a:hover, .admin-nav a.active { color: var(--accent); background: var(--accent-light); }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Admin nav -->
+<div class="admin-nav">
+    <div class="container d-flex gap-1 flex-wrap">
+        <a href="{{ url_for('admin_dashboard') }}" class="active"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
+        <a href="{{ url_for('admin_orders') }}"><i class="bi bi-bag me-1"></i>Orders</a>
+        <a href="{{ url_for('admin_customers') }}"><i class="bi bi-people me-1"></i>Customers</a>
+        <a href="{{ url_for('admin_restaurants') }}"><i class="bi bi-shop me-1"></i>Restaurants</a>
+        <a href="{{ url_for('admin_menu') }}"><i class="bi bi-list-ul me-1"></i>Menu Items</a>
+        <a href="{{ url_for('admin_logout') }}" class="ms-auto"><i class="bi bi-box-arrow-right me-1"></i>Logout</a>
+    </div>
+</div>
+
+<div class="container py-4">
+    <h2 class="section-title mb-4">Dashboard</h2>
+
+    <!-- Stats -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="stat-card">
+                <div class="stat-icon mb-2" style="background:var(--accent-light);color:var(--accent);"><i class="bi bi-people"></i></div>
+                <div class="stat-value">{{ stats.total_customers }}</div>
+                <div class="stat-label">Customers</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-card">
+                <div class="stat-icon mb-2" style="background:#DBEAFE;color:#2563EB;"><i class="bi bi-shop"></i></div>
+                <div class="stat-value">{{ stats.total_restaurants }}</div>
+                <div class="stat-label">Restaurants</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-card">
+                <div class="stat-icon mb-2" style="background:#D1FAE5;color:#16A34A;"><i class="bi bi-bag-check"></i></div>
+                <div class="stat-value">{{ stats.total_orders }}</div>
+                <div class="stat-label">Total Orders</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-card">
+                <div class="stat-icon mb-2" style="background:#FEF3C7;color:#D97706;"><i class="bi bi-currency-dollar"></i></div>
+                <div class="stat-value">Rs. {{ "%.0f"|format(stats.total_revenue) }}</div>
+                <div class="stat-label">Revenue (Delivered)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent orders -->
+    <div class="card-modern p-4">
+        <h5 class="fw-bold mb-3">Recent orders</h5>
+        <div class="table-responsive">
+            <table class="table table-modern mb-0">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Restaurant</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in recent_orders %}
+                    <tr>
+                        <td class="fw-bold">#{{ order.order_id }}</td>
+                        <td>{{ order.customer_name }}</td>
+                        <td>{{ order.restaurant_name }}</td>
+                        <td>Rs. {{ "%.0f"|format(order.total_amount) }}</td>
+                        <td>
+                            {% set sc = {'Pending':'badge-pending','Confirmed':'badge-confirmed','Preparing':'badge-preparing','Out for Delivery':'badge-delivery','Delivered':'badge-delivered','Cancelled':'badge-cancelled'} %}
+                            <span class="badge-status {{ sc.get(order.status,'badge-pending') }}">{{ order.status }}</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

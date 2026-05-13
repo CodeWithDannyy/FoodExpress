@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}My Orders — FoodExpress{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="section-title mb-4">My orders</h2>
+
+    {% if orders %}
+    {% for order in orders %}
+    <div class="card-modern p-4 mb-3">
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+            <div>
+                <h6 class="fw-bold mb-1">Order #{{ order.order_id }} — {{ order.restaurant_name }}</h6>
+                <p class="small mb-0" style="color:var(--gray-400);">
+                    <i class="bi bi-calendar3 me-1"></i>{{ order.order_date }}
+                    <span class="mx-2">•</span>
+                    <i class="bi bi-geo-alt me-1"></i>{{ order.delivery_address }}
+                </p>
+            </div>
+            <div class="text-end">
+                {% set status_class = {
+                    'Pending':'badge-pending',
+                    'Confirmed':'badge-confirmed',
+                    'Preparing':'badge-preparing',
+                    'Out for Delivery':'badge-delivery',
+                    'Delivered':'badge-delivered',
+                    'Cancelled':'badge-cancelled'
+                } %}
+                <span class="badge-status {{ status_class.get(order.status, 'badge-pending') }}">{{ order.status }}</span>
+            </div>
+        </div>
+        <div class="mb-3">
+            {% for d in order.order_items %}
+            <div class="d-flex justify-content-between small py-1">
+                <span>{{ d.item_name }} × {{ d.quantity }}</span>
+                <span class="fw-bold">Rs. {{ "%.0f"|format(d.unit_price * d.quantity) }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        <hr>
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                {% if order.payment %}
+                <span class="small" style="color:var(--gray-400);">
+                    <i class="bi bi-credit-card me-1"></i>{{ order.payment.method }}
+                    — {{ order.payment.status }}
+                </span>
+                {% endif %}
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <span class="price-tag">Rs. {{ "%.0f"|format(order.total_amount) }}</span>
+                {% if order.status not in ['Delivered', 'Cancelled'] %}
+                <a href="{{ url_for('track_order', oid=order.order_id) }}" class="btn btn-outline-accent btn-sm">
+                    <i class="bi bi-geo me-1"></i>Track
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="text-center py-5">
+        <div style="font-size:4rem;margin-bottom:1rem;">📦</div>
+        <h4 class="fw-bold">No orders yet</h4>
+        <p style="color:var(--gray-400);">Place your first order from our restaurants!</p>
+        <a href="{{ url_for('index') }}" class="btn btn-accent mt-2">Browse Restaurants</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

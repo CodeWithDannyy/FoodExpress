@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Admin Login — FoodExpress{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card-modern p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <div style="width:50px;height:50px;background:var(--accent-light);border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:1.4rem;color:var(--accent);margin-bottom:.75rem;">
+                        <i class="bi bi-shield-lock"></i>
+                    </div>
+                    <h4 class="section-title">Admin panel</h4>
+                    <p class="small" style="color:var(--gray-400);">Sign in to manage the system</p>
+                </div>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Username</label>
+                        <input type="text" name="username" class="form-control search-bar" placeholder="admin" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold">Password</label>
+                        <input type="password" name="password" class="form-control search-bar" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-accent w-100 py-2">Sign In</button>
+                </form>
+                <hr class="my-3">
+                <p class="text-center small mb-0" style="color:var(--gray-400);">
+                    Demo: <code>admin</code> / <code>admin123</code>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

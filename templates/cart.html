@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Your Cart — FoodExpress{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="section-title mb-4">Your cart</h2>
+
+    {% if cart %}
+    <div class="row g-4">
+        <div class="col-lg-8">
+            {% for item in cart %}
+            <div class="card-modern d-flex align-items-center p-3 mb-3">
+                <div class="food-img-placeholder" style="width:70px;height:70px;border-radius:12px;font-size:1.5rem;flex-shrink:0;">🍽️</div>
+                <div class="ms-3 flex-grow-1">
+                    <h6 class="fw-bold mb-0">{{ item.name }}</h6>
+                    <p class="small mb-0" style="color:var(--gray-400);">Qty: {{ item.quantity }} × Rs. {{ "%.0f"|format(item.price) }}</p>
+                </div>
+                <div class="text-end">
+                    <span class="price-tag">Rs. {{ "%.0f"|format(item.price * item.quantity) }}</span>
+                    <br>
+                    <a href="{{ url_for('cart_remove', item_id=item.item_id) }}" class="small text-danger text-decoration-none">
+                        <i class="bi bi-trash3 me-1"></i>Remove
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card-modern p-4">
+                <h5 class="fw-bold mb-3">Order summary</h5>
+                <div class="d-flex justify-content-between mb-2">
+                    <span style="color:var(--gray-400);">Subtotal</span>
+                    <span class="fw-bold">Rs. {{ "%.0f"|format(total) }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span style="color:var(--gray-400);">Delivery</span>
+                    <span class="fw-bold" style="color:var(--green);">FREE</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="fw-bold">Total</span>
+                    <span class="fw-bold" style="font-size:1.2rem;color:var(--accent);">Rs. {{ "%.0f"|format(total) }}</span>
+                </div>
+                <a href="{{ url_for('checkout') }}" class="btn btn-accent w-100 py-2">
+                    <i class="bi bi-credit-card me-2"></i>Proceed to Checkout
+                </a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <div style="font-size:4rem;margin-bottom:1rem;">🛒</div>
+        <h4 class="fw-bold">Your cart is empty</h4>
+        <p style="color:var(--gray-400);">Browse restaurants and add items to get started.</p>
+        <a href="{{ url_for('index') }}" class="btn btn-accent mt-2">Browse Restaurants</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
